@@ -4,7 +4,7 @@ const {
   updateQuiz,
   getQuiz,
   deleteQuiz,
-} = require("../controllers/quiz.controller");
+} = require("../controllers/quizController/quiz.controller");
 const { isLoggedIn } = require("../middleware/auth.middleware");
 
 const quizRoute = express.Router();

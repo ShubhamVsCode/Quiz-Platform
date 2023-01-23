@@ -1,6 +1,6 @@
-const Quiz = require("../model/quiz.model");
-const asyncHandler = require("../services/asyncHandler");
-const CustomError = require("../utils/customError");
+const Quiz = require("../../model/quizModel/quiz.model");
+const asyncHandler = require("../../services/asyncHandler");
+const CustomError = require("../../utils/customError");
 
 const getQuiz = asyncHandler(async (req, res) => {
   try {
@@ -19,7 +19,8 @@ const getQuiz = asyncHandler(async (req, res) => {
 
 const createQuiz = asyncHandler(async (req, res) => {
   try {
-    let { quiz_name, questions, quiz_image, quiz_difficulty } = req.body;
+    let { quiz_name, questions, quiz_image, quiz_difficulty, quiz_type } =
+      req.body;
 
     if (!quiz_name) throw new CustomError("Quiz Name is required", 401);
     if (questions.length === 0)
@@ -34,6 +35,7 @@ const createQuiz = asyncHandler(async (req, res) => {
       questions,
       quiz_image,
       quiz_difficulty,
+      quiz_type,
     });
 
     if (!quiz) throw new CustomError("Quiz cannot be created", 500);
@@ -49,7 +51,8 @@ const updateQuiz = asyncHandler(async (req, res) => {
     const { quiz_id } = req.params;
     if (!quiz_id) throw new CustomError("Quiz ID not provided", 401);
 
-    let { quiz_name, questions, quiz_image, quiz_difficulty } = req.body;
+    let { quiz_name, questions, quiz_image, quiz_difficulty, quiz_type } =
+      req.body;
 
     const quiz = await Quiz.findByIdAndUpdate(
       quiz_id,
@@ -57,6 +60,7 @@ const updateQuiz = asyncHandler(async (req, res) => {
         quiz_name,
         quiz_difficulty,
         quiz_image,
+        quiz_type,
       },
       { new: true }
     );

@@ -3,9 +3,10 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 
-const quizModel = require("./model/quiz.model");
 const authRoute = require("./router/auth.route");
 const quizRoute = require("./router/quiz.route");
+const optionRoute = require("./router/option.route");
+const questionRoute = require("./router/question.route");
 
 const app = express();
 
@@ -19,6 +20,8 @@ app.use(cookieParser());
 app.get("/", (req, res) => res.json({ msg: "Hello world!" }));
 app.use("/api/auth", authRoute);
 app.use("/api/quiz", quizRoute);
+app.use("/api/option", optionRoute);
+app.use("/api/question", questionRoute);
 
 (async () => {
   try {
