@@ -1,9 +1,12 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
+const cookieParser = require("cookie-parser");
+
 const quizModel = require("./model/quiz.model");
 const authRoute = require("./router/auth.route");
-const cookieParser = require("cookie-parser");
+const quizRoute = require("./router/quiz.route");
+
 const app = express();
 
 const PORT = process.env.PORT || 5050;
@@ -14,7 +17,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.get("/", (req, res) => res.json({ msg: "Hello world!" }));
-app.use("/api/auth/", authRoute);
+app.use("/api/auth", authRoute);
+app.use("/api/quiz", quizRoute);
 
 (async () => {
   try {

@@ -47,7 +47,8 @@ const QuestionModel = new Schema({
   },
   question_difficulty: {
     type: Number,
-    enum: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    min: [1, "Must be at least 6, got {VALUE}"],
+    max: 10,
   },
 });
 
