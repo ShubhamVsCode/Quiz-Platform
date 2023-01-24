@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 
 const authRoute = require("./router/auth.route");
 const quizRoute = require("./router/quiz.route");
@@ -13,6 +14,7 @@ const app = express();
 const PORT = process.env.PORT || 5050;
 mongoose.set("strictQuery", true);
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
