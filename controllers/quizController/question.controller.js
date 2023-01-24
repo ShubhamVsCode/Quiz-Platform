@@ -47,19 +47,29 @@ const createQuestion = asyncHandler(async (req, res) => {
     if (options.length === 0)
       throw new CustomError("Options are required", 401);
 
-    const option1 = new Option(options[0]);
-    const option2 = new Option(options[1]);
-    const option3 = new Option(options[2]);
-    const option4 = new Option(options[3]);
+    const optionsIdArray = [];
 
-    await option1.save();
-    await option2.save();
-    await option3.save();
-    await option4.save();
+    // Taking options from body and creating option then sending back _id in an Array: optionsIdArray, for question creation
+    for (let i = 0; i < options.length; i++) {
+      const element = options[i];
+      const option = new Option(element);
+      await option.save().then((result) => optionsIdArray.push(result._id));
+    }
+
+    // const option1 = new Option(options[0]);
+    // const option2 = new Option(options[1]);
+    // const option3 = new Option(options[2]);
+    // const option4 = new Option(options[3]);
+
+    // await option1.save();
+    // await option2.save();
+    // await option3.save();
+    // await option4.save();
 
     const question = await Question.create({
       question_text,
-      options: [option1._id, option2._id, option3._id, option4._id],
+      options: optionsIdArray,
+      // options: [option1._id, option2._id, option3._id, option4._id],
       solution,
       question_image,
       question_difficulty,
