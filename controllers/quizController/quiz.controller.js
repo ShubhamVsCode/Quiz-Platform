@@ -19,16 +19,20 @@ const getQuiz = asyncHandler(async (req, res) => {
 
 const createQuiz = asyncHandler(async (req, res) => {
   try {
-    let { quiz_name, questions, quiz_image, quiz_difficulty, quiz_type } =
-      req.body;
+    const {
+      quiz_name,
+      questions,
+      quiz_image,
+      quiz_difficulty,
+      quiz_type,
+      is_published,
+      is_live,
+      quiz_date,
+    } = req.body;
 
     if (!quiz_name) throw new CustomError("Quiz Name is required", 401);
     if (questions.length === 0)
       throw new CustomError("Questions are required", 401);
-
-    if (!quiz_difficulty) {
-      quiz_difficulty = 5;
-    }
 
     const quiz = await Quiz.create({
       quiz_name,
@@ -36,9 +40,12 @@ const createQuiz = asyncHandler(async (req, res) => {
       quiz_image,
       quiz_difficulty,
       quiz_type,
+      is_published,
+      is_live,
+      quiz_date,
     });
 
-    if (!quiz) throw new CustomError("Quiz cannot be created", 500);
+    if (!quiz) throw new CustomError("Quiz cannot be created", 400);
 
     res.status(201).json(quiz);
   } catch (error) {

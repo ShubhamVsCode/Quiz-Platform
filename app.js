@@ -3,6 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const morgan = require("morgan"); // TODO: only for development purpose
 
 const authRoute = require("./router/auth.route");
 const quizRoute = require("./router/quiz.route");
@@ -18,6 +19,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(morgan("tiny"));
 
 app.get("/", (req, res) => res.json({ msg: "Hello world!" }));
 app.use("/api/auth", authRoute);

@@ -12,14 +12,31 @@ const QuizModel = new Schema({
   },
   quiz_image: {
     type: String,
+    default: "",
   },
   quiz_difficulty: {
     type: String,
     enum: ["EASY", "MEDIUM", "HARD"],
+    default: "MEDIUM",
   },
   quiz_type: {
     type: String,
     enum: ["SINGLE_CORRECT", "MULTIPLE_CORRECT"],
+    default: "SINGLE_CORRECT",
+  },
+  is_published: {
+    type: Boolean,
+    default: false,
+  },
+  is_live: {
+    type: Boolean,
+    default: false,
+  },
+  quiz_date: {
+    type: {
+      start: Date,
+      end: Date,
+    },
   },
 });
 

@@ -77,7 +77,7 @@ const createQuestion = asyncHandler(async (req, res) => {
 
     if (!question) throw new CustomError("Question creation failed", 500);
 
-    res.status(201).json(question);
+    res.status(201).json(await question.populate("options"));
   } catch (error) {
     throw new CustomError(error.message, 500);
   }
@@ -88,8 +88,22 @@ const updateQuestion = asyncHandler(async (req, res) => {
     const { question_id } = req.params;
     if (!question_id) throw new CustomError("Question ID not provided", 401);
 
-    let { question_text, solution, question_difficulty, question_image } =
-      req.body;
+    let {
+      question_text,
+      options,
+      solution,
+      question_difficulty,
+      question_image,
+    } = req.body;
+
+    for (let i = 0; i < options.length; i++) {
+      const option = options[i];
+      const result = await Option.findByIdAndUpdate(option?._id, {
+        option_text: option.option_text,
+        is_correct: option.is_correct,
+        option_image: option.option_image,
+      });
+    }
 
     const quiz = await Question.findByIdAndUpdate(
       question_id,
@@ -104,7 +118,7 @@ const updateQuestion = asyncHandler(async (req, res) => {
 
     if (!quiz) throw new CustomError("Question updation failed", 400);
 
-    res.status(200).json(quiz);
+    res.status(200).json(await quiz.populate("options"));
   } catch (error) {
     throw new CustomError(error.message, 500);
   }
